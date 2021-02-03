@@ -41,6 +41,9 @@ module.exports = async function (req, res, next) {
     if (!fs.existsSync(fileName)) {
       await captureWebsite.file(url, fileName, {
         fullPage: true,
+        launchOptions: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
       })
     }
 
