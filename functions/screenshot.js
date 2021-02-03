@@ -18,6 +18,8 @@ String.prototype.hashCode = function () {
 const folder = './screenshots'
 
 module.exports = async function (url) {
+  console.log(`Screenshoting ${url}`)
+
   const fileName = `${folder}/${url.hashCode()}.jpeg`
 
   if (!fs.existsSync(folder)) {

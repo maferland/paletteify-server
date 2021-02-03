@@ -14,14 +14,22 @@ function rgbToHex(r, g, b) {
 const folder = './screenshots'
 
 module.exports = async function (fileName) {
+  console.log(`Generating palette for ${url} (${fileName})`)
+
   if (!fs.existsSync(fileName)) {
     throw new Error(`File does not exists ${fileName}`)
   }
   const palette = await vibrant.from(fileName).quality(0.5).getPalette()
-  return Object.keys(palette).map((key) => {
+  const result = Object.keys(palette).map((key) => {
     const {
       rgb: [r, g, b],
     } = palette[key]
     return {name: key, code: rgbToHex(r, g, b)}
   })
+
+  console.log(`===== We have a winner =====`)
+  result.forEach((color) => console.log(`${color.name} - ${color.code}`))
+  console.log(`============================`)
+
+  return result
 }

@@ -15,13 +15,9 @@ function start() {
     const {
       data: {url},
     } = job
-    console.log(`Screenshoting ${url}`)
     const fileName = await screenshot(url)
-    console.log(`Generating palette for ${url} (${fileName})`)
     const palette = await generate(fileName)
-    console.log(`===== We have a winner =====`)
-    palette.forEach((color) => console.log(`${color.name} - ${color.code}`))
-    console.log(`============================`)
+
     return {palette}
   })
 }
