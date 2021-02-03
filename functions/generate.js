@@ -32,11 +32,17 @@ const headers = {
   'Access-Control-Allow-Methods': 'POST',
 }
 
+const folder = './screenshots'
+
 module.exports = async function (req, res, next) {
   try {
     const {url} = req.body
 
-    const fileName = `./screenshots/${url.hashCode()}.png`
+    const fileName = `${folder}/${url.hashCode()}.png`
+
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder)
+    }
 
     if (!fs.existsSync(fileName)) {
       await captureWebsite.file(url, fileName, {
