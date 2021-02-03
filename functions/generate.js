@@ -13,26 +13,15 @@ function rgbToHex(r, g, b) {
 
 const folder = './screenshots'
 
-module.exports = async function (req, res, next) {
-  try {
-    const {fileName} = req.body
-
-    if (!fs.existsSync(fileName)) {
-      return res.status(404).send()
-    }
-
-    const palette = await vibrant.from(fileName).getPalette()
-    const hexPalette = Object.keys(palette).map((key) => {
-      const {
-        rgb: [r, g, b],
-      } = palette[key]
-      return {name: key, code: rgbToHex(r, g, b)}
-    })
-
-    res.send({
-      palette: hexPalette,
-    })
-  } catch (error) {
-    next(error)
+module.exports = async function (fileName) {
+  if (!fs.existsSync(fileName)) {
+    throw new Error(`File does not exists ${fileName}`)
   }
+  const palette = await vibrant.from(fileName).quality(0.5).getPalette()
+  return Object.keys(palette).map((key) => {
+    const {
+      rgb: [r, g, b],
+    } = palette[key]
+    return {name: key, code: rgbToHex(r, g, b)}
+  })
 }

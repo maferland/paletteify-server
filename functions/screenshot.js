@@ -17,33 +17,27 @@ String.prototype.hashCode = function () {
 
 const folder = './screenshots'
 
-module.exports = async function (req, res, next) {
-  try {
-    const {url} = req.body
+module.exports = async function (url) {
+  const fileName = `${folder}/${url.hashCode()}.jpeg`
 
-    const fileName = `${folder}/${url.hashCode()}.jpeg`
-
-    if (!fs.existsSync(folder)) {
-      fs.mkdirSync(folder)
-    }
-
-    if (!fs.existsSync(fileName)) {
-      await captureWebsite.file(url, fileName, {
-        fullPage: true,
-        type: 'jpeg',
-        quality: '0.8',
-        timeout: 15,
-        overwrite: true,
-        launchOptions: {
-          args: ['--no-sandbox', '--disable-setuid-sandbox'],
-        },
-      })
-    }
-
-    res.send({
-      fileName,
-    })
-  } catch (error) {
-    next(error)
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder)
   }
+
+  if (!fs.existsSync(fileName)) {
+    await captureWebsite.file(url, fileName, {
+      fullPage: true,
+      type: 'jpeg',
+      quality: '0.8',
+      scaleFactor: 1,
+      disableAnimations: true,
+      timeout: 15,
+      overwrite: true,
+      launchOptions: {
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      },
+    })
+  }
+
+  return fileName
 }
