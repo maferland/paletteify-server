@@ -47,6 +47,10 @@ module.exports = async function (req, res, next) {
     if (!fs.existsSync(fileName)) {
       await captureWebsite.file(url, fileName, {
         fullPage: true,
+        type: 'jpeg',
+        quality: '0.8',
+        timeout: 15,
+        overwrite: true,
         launchOptions: {
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
         },
