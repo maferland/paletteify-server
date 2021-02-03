@@ -1,0 +1,27 @@
+{
+  "name": "paletteify-server",
+  "version": "1.0.0",
+  "description": "🎨 Generate color palette from URL ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "capture-website": "^1.2.8",
+    "express": "^4.17.1",
+    "node-vibrant": "^3.2.1-alpha.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maferland/paletteify-server.git"
+  },
+  "keywords": [],
+  "author": "Marc-Antoine Ferland <maferland@hey.com> (https://maferland.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maferland/paletteify-server/issues"
+  },
+  "homepage": "https://github.com/maferland/paletteify-server#readme",
+  "devDependencies": {}
+}
