@@ -21,7 +21,7 @@ module.exports = async function (req, res, next) {
   try {
     const {url} = req.body
 
-    const fileName = `${folder}/${url.hashCode()}.png`
+    const fileName = `${folder}/${url.hashCode()}.jpeg`
 
     if (!fs.existsSync(folder)) {
       fs.mkdirSync(folder)

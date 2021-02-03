@@ -10,7 +10,7 @@ const port = process.env.PORT || 4000
 app.set('port', port)
 app.use(bodyParser.json())
 
-app.post('/generate', generate)
+app.get('/palette', generate)
 app.post('/screenshot', screenshot)
 
 app.listen(port, () => {
