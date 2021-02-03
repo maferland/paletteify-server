@@ -1,5 +1,4 @@
 const captureWebsite = require('capture-website')
-const fs = require('fs')
 
 // https://stackoverflow.com/questions/6122571/simple-non-secure-hash-function-for-javascript
 String.prototype.hashCode = function () {
@@ -18,16 +17,12 @@ String.prototype.hashCode = function () {
 const folder = './screenshots'
 
 module.exports = async function (url) {
-  console.log(`Screenshoting ${url}`)
+  console.log(`START -> Screenshotting ${url}`)
 
   const fileName = `${folder}/${url.hashCode()}.jpeg`
 
-  if (!fs.existsSync(folder)) {
-    fs.mkdirSync(folder)
-  }
-
-  if (!fs.existsSync(fileName)) {
-    await captureWebsite.file(url, fileName, {
+  await captureWebsite
+    .file(url, fileName, {
       fullPage: true,
       type: 'jpeg',
       quality: '0.8',
@@ -39,7 +34,10 @@ module.exports = async function (url) {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       },
     })
-  }
+    .then(
+      () => console.log(`SUCCESS -> Screenshotting ${url}`),
+      () => console.error(`FAIL -> Screenshotting ${url}`),
+    )
 
   return fileName
 }

@@ -11,25 +11,26 @@ function rgbToHex(r, g, b) {
   return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
 }
 
-const folder = './screenshots'
-
-module.exports = async function (fileName) {
-  console.log(`Generating palette for ${url} (${fileName})`)
+module.exports = async function (url, fileName) {
+  console.log(`START -> Generating palette for ${url} (${fileName})`)
 
   if (!fs.existsSync(fileName)) {
     throw new Error(`File does not exists ${fileName}`)
   }
-  const palette = await vibrant.from(fileName).quality(0.5).getPalette()
-  const result = Object.keys(palette).map((key) => {
+  const palette = await vibrant
+    .from(fileName)
+    .quality(0.5)
+    .getPalette()
+    .catch(() =>
+      console.error(`FAIL -> Generating palette for ${url} (${fileName})`),
+    )
+
+  console.log(`SUCCESS -> Generating palette for ${url} (${fileName})`)
+
+  return Object.keys(palette).map((key) => {
     const {
       rgb: [r, g, b],
     } = palette[key]
     return {name: key, code: rgbToHex(r, g, b)}
   })
-
-  console.log(`===== We have a winner =====`)
-  result.forEach((color) => console.log(`${color.name} - ${color.code}`))
-  console.log(`============================`)
-
-  return result
 }

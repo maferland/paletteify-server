@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const Queue = require('bull')
+const fetch = require('./functions/fetch')
 
 const PORT = process.env.PORT || 4000
 let REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379'
@@ -16,14 +17,18 @@ app.post('/generate', async (req, res, next) => {
   try {
     const {url} = req.body
 
-    let job = await workQueue.add({url})
-
-    res.json({id: job.id})
+    const response = await fetch(url)
+    if (!response) {
+      let job = await workQueue.add({url})
+      res.json({id: job.id})
+    } else {
+      res.json(response.data)
+    }
   } catch (error) {
     next(error)
   }
 })
 
 app.listen(PORT, () => {
-  console.log(`palettify-server listening at http://localhost:${PORT}`)
+  console.log(`paletteify-server listening at http://localhost:${PORT}`)
 })
