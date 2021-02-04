@@ -36,7 +36,7 @@ module.exports = async function (url) {
     })
     .then(
       () => console.log(`SUCCESS -> Screenshotting ${url}`),
-      () => console.error(`FAIL -> Screenshotting ${url}`),
+      (e) => console.error(`FAIL -> Screenshotting ${url} -> REASON ${e}`),
     )
 
   return fileName

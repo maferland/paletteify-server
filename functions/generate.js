@@ -21,8 +21,11 @@ module.exports = async function (url, fileName) {
     .from(fileName)
     .quality(0.5)
     .getPalette()
-    .catch(() =>
-      console.error(`FAIL -> Generating palette for ${url} (${fileName})`),
+    .then(console.log)
+    .catch((e) =>
+      console.error(
+        `FAIL -> Generating palette for ${url} (${fileName}) REASON -> ${e}`,
+      ),
     )
 
   console.log(`SUCCESS -> Generating palette for ${url} (${fileName})`)
