@@ -2,7 +2,7 @@
   "name": "paletteify-server",
   "version": "1.0.0",
   "description": "🎨 Generate color palette from URL ",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nf start"
   },
