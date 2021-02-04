@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 const Queue = require('bull')
 const fetch = require('./functions/fetch')
 
@@ -12,6 +13,7 @@ let workQueue = new Queue('generate_palette', REDIS_URL)
 
 app.set('port', PORT)
 app.use(bodyParser.json())
+app.use(cors())
 
 app.post('/generate', async (req, res, next) => {
   try {
