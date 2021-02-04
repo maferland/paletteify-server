@@ -33,8 +33,6 @@ app.post('/generate', async (req, res, next) => {
 
 app.get('/poll/:id', async (req, res) => {
   let id = req.params.id
-  const {url} = req.body
-
   let job = await workQueue.getJob(id)
 
   if (job === null) {
@@ -44,10 +42,12 @@ app.get('/poll/:id', async (req, res) => {
     if (state === 'completed') {
       const response = await fetch(url)
       res.json(response.data)
-    } else {
-      let progress = job._progress
+    } else if (job.failedReason) {
       let reason = job.failedReason
-      res.json({id, state, progress, reason})
+      res.status(500).json({id, state, reason})
+    } else {
+      const progress = job.progress
+      res.json({id, state, progress})
     }
   }
 })
