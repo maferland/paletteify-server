@@ -39,10 +39,7 @@ app.get('/poll/:id', async (req, res) => {
     res.status(404).end()
   } else {
     let state = await job.getState()
-    if (state === 'completed') {
-      const response = await fetch(url)
-      res.json(response.data)
-    } else if (job.failedReason) {
+    if (state === 'failed') {
       let reason = job.failedReason
       res.status(500).json({id, state, reason})
     } else {
