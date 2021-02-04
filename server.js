@@ -31,6 +31,27 @@ app.post('/generate', async (req, res, next) => {
   }
 })
 
+app.get('/poll/:id', async (req, res) => {
+  let id = req.params.id
+  const {url} = req.body
+
+  let job = await workQueue.getJob(id)
+
+  if (job === null) {
+    res.status(404).end()
+  } else {
+    let state = await job.getState()
+    if (state === 'completed') {
+      const response = await fetch(url)
+      res.json(response.data)
+    } else {
+      let progress = job._progress
+      let reason = job.failedReason
+      res.json({id, state, progress, reason})
+    }
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`paletteify-server listening at http://localhost:${PORT}`)
 })
