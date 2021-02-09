@@ -33,7 +33,7 @@ module.exports = async function (url) {
       quality: '0.8',
       scaleFactor: 1,
       disableAnimations: true,
-      timeout: 15,
+      timeout: 60,
       overwrite: true,
       launchOptions: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
