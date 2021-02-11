@@ -7,10 +7,6 @@ function componentToHex(c) {
   return hex.length == 1 ? '0' + hex : hex
 }
 
-function rgbToHex(r, g, b) {
-  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b)
-}
-
 module.exports = async function (url, fileName) {
   console.log(`START -> Generating palette for ${url} (${fileName})`)
 
@@ -19,7 +15,7 @@ module.exports = async function (url, fileName) {
   }
   const palette = await vibrant
     .from(fileName)
-    .quality(0.5)
+    .quality(0.75)
     .getPalette()
     .catch((e) =>
       console.error(
@@ -33,6 +29,6 @@ module.exports = async function (url, fileName) {
     const {
       rgb: [r, g, b],
     } = palette[key]
-    return {name: key, code: rgbToHex(r, g, b)}
+    return {name: key, code: vibrant.Util.rgbToHex(r, g, b)}
   })
 }

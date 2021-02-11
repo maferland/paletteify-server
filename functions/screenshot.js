@@ -21,8 +21,8 @@ String.prototype.contains = function (str) {
 
 const folder = './screenshots'
 
-const capture = (url, fileName) => {
-  return captureWebsite
+const capture = async (url, fileName) => {
+  return await captureWebsite
     .file(url, fileName, {
       fullPage: true,
       type: 'jpeg',
@@ -41,7 +41,9 @@ const capture = (url, fileName) => {
         return true
       },
       (e) => {
-        console.error(`FAIL -> Screenshotting ${url} -> REASON ${e}`)
+        console.error(
+          `FAIL -> Screenshotting ${url} (${fileName}) -> REASON ${e}`,
+        )
         return false
       },
     )
@@ -58,7 +60,7 @@ module.exports = async function (url) {
 
   let success = await capture(url, fileName)
   if (!success && !url.contains('www')) {
-    const wwwURL = url.replace('https://', 'https://www.')
+    const wwwURL = url.slice().replace('https://', 'https://www.')
     console.log(`TENTATIVE -> Screenshotting ${wwwURL}`)
     success = await capture(wwwURL, fileName)
   }
