@@ -57,8 +57,6 @@ module.exports = async function (url) {
   }
 
   let success = await capture(url, fileName)
-  console.log(success, url)
-  console.log(success, url, url.indexOf('www') === -1)
   if (!success && !url.contains('www')) {
     const wwwURL = url.replace('https://', 'https://www.')
     console.log(`TENTATIVE -> Screenshotting ${wwwURL}`)
