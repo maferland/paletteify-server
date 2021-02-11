@@ -15,10 +15,14 @@ String.prototype.hashCode = function () {
   return Math.abs(hash)
 }
 
+String.prototype.contains = function (str) {
+  return this.indexOf(str) !== -1
+}
+
 const folder = './screenshots'
 
-const capture = async (url, fileName) => {
-  await captureWebsite
+const capture = (url, fileName) => {
+  return captureWebsite
     .file(url, fileName, {
       fullPage: true,
       type: 'jpeg',
@@ -52,10 +56,13 @@ module.exports = async function (url) {
     fs.mkdirSync(folder)
   }
 
-  let success = capture(url, fileName)
+  let success = await capture(url, fileName)
+  console.log(success, url)
+  console.log(success, url, url.indexOf('www') === -1)
   if (!success && !url.contains('www')) {
-    console.log(`TENTATIVE -> Screenshotting (WWW) ${url}`)
-    success = capture(url.replace('https://', 'https://www'), fileName)
+    const wwwURL = url.replace('https://', 'https://www.')
+    console.log(`TENTATIVE -> Screenshotting ${wwwURL}`)
+    success = await capture(wwwURL, fileName)
   }
 
   return fileName
