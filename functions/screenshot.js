@@ -17,7 +17,7 @@ String.prototype.hashCode = function () {
 
 const folder = './screenshots'
 
-const capture = async (url) => {
+const capture = async (url, fileName) => {
   await captureWebsite
     .file(url, fileName, {
       fullPage: true,
@@ -52,10 +52,10 @@ module.exports = async function (url) {
     fs.mkdirSync(folder)
   }
 
-  let success = capture(url)
+  let success = capture(url, fileName)
   if (!success && !url.contains('www')) {
     console.log(`TENTATIVE -> Screenshotting (WWW) ${url}`)
-    success = capture(url.replace('https://', 'https://www'))
+    success = capture(url.replace('https://', 'https://www'), fileName)
   }
 
   return fileName
