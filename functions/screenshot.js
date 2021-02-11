@@ -17,15 +17,7 @@ String.prototype.hashCode = function () {
 
 const folder = './screenshots'
 
-module.exports = async function (url) {
-  console.log(`START -> Screenshotting ${url}`)
-
-  const fileName = `${folder}/${url.hashCode()}.jpeg`
-
-  if (!fs.existsSync(folder)) {
-    fs.mkdirSync(folder)
-  }
-
+const capture = async (url) => {
   await captureWebsite
     .file(url, fileName, {
       fullPage: true,
@@ -40,9 +32,31 @@ module.exports = async function (url) {
       },
     })
     .then(
-      () => console.log(`SUCCESS -> Screenshotting ${url}`),
-      (e) => console.error(`FAIL -> Screenshotting ${url} -> REASON ${e}`),
+      () => {
+        console.log(`SUCCESS -> Screenshotting ${url}`)
+        return true
+      },
+      (e) => {
+        console.error(`FAIL -> Screenshotting ${url} -> REASON ${e}`)
+        return false
+      },
     )
+}
+
+module.exports = async function (url) {
+  console.log(`START -> Screenshotting ${url}`)
+
+  const fileName = `${folder}/${url.hashCode()}.jpeg`
+
+  if (!fs.existsSync(folder)) {
+    fs.mkdirSync(folder)
+  }
+
+  let success = capture(url)
+  if (!success && !url.contains('www')) {
+    console.log(`TENTATIVE -> Screenshotting (WWW) ${url}`)
+    success = capture(url.replace('https://', 'https://www'))
+  }
 
   return fileName
 }
