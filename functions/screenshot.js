@@ -22,29 +22,34 @@ String.prototype.contains = function (str) {
 const folder = './screenshots'
 
 const capture = async (url, fileName) => {
-  return await captureWebsite
-    .file(url, fileName, {
-      fullPage: true,
-      type: 'jpeg',
-      quality: '0.8',
-      scaleFactor: 1,
-      disableAnimations: true,
-      timeout: 20,
-      overwrite: true,
-      launchOptions: {
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      },
-    })
-    .then(
-      () => {
-        console.log(`SUCCESS -> Screenshotting ${url}`)
-        return [true]
-      },
-      (e) => {
-        console.error(`FAIL -> Screenshotting ${url} REASON -> ${e}`)
-        return [false, e]
-      },
-    )
+  return await Promise.race(
+    await new Promise((resolve, reject) => {
+      setTimeout(() => reject([false, 'Screenshot timed out']), 25 * 1000)
+    }),
+    await captureWebsite
+      .file(url, fileName, {
+        fullPage: true,
+        type: 'jpeg',
+        quality: '0.8',
+        scaleFactor: 1,
+        disableAnimations: true,
+        timeout: 20,
+        overwrite: true,
+        launchOptions: {
+          args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        },
+      })
+      .then(
+        () => {
+          console.log(`SUCCESS -> Screenshotting ${url}`)
+          return [true]
+        },
+        (e) => {
+          console.error(`FAIL -> Screenshotting ${url} REASON -> ${e}`)
+          return [false, e]
+        },
+      ),
+  )
 }
 
 module.exports = async function (url) {
