@@ -20,6 +20,7 @@ app.post('/generate', async (req, res, next) => {
     const {url} = req.body
 
     const response = await fetch(url)
+
     if (!response) {
       let job = await workQueue.add({url})
       res.json({id: job.id})

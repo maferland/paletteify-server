@@ -17,11 +17,12 @@ module.exports = async function (url, fileName) {
     .from(fileName)
     .quality(0.75)
     .getPalette()
-    .catch((e) =>
+    .catch((e) => {
       console.error(
         `FAIL -> Generating palette for ${url} (${fileName}) REASON -> ${e}`,
-      ),
-    )
+      )
+      throw e
+    })
 
   console.log(`SUCCESS -> Generating palette for ${url} (${fileName})`)
 
