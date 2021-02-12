@@ -29,7 +29,7 @@ const capture = async (url, fileName) => {
       quality: '0.8',
       scaleFactor: 1,
       disableAnimations: true,
-      timeout: 60,
+      timeout: 20,
       overwrite: true,
       launchOptions: {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
