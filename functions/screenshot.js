@@ -38,13 +38,11 @@ const capture = async (url, fileName) => {
     .then(
       () => {
         console.log(`SUCCESS -> Screenshotting ${url}`)
-        return true
+        return [true]
       },
       (e) => {
-        console.error(
-          `FAIL -> Screenshotting ${url} (${fileName}) -> REASON ${e}`,
-        )
-        return false
+        console.error(`FAIL -> Screenshotting ${url} REASON -> ${e}`)
+        return [false, e]
       },
     )
 }
@@ -58,11 +56,15 @@ module.exports = async function (url) {
     fs.mkdirSync(folder)
   }
 
-  let success = await capture(url, fileName)
+  let [success, error] = await capture(url, fileName)
   if (!success && !url.contains('www')) {
     const wwwURL = url.slice().replace('https://', 'https://www.')
     console.log(`TENTATIVE -> Screenshotting ${wwwURL}`)
-    success = await capture(wwwURL, fileName)
+    ;[success, error] = await capture(wwwURL, fileName)
+  }
+
+  if (!success && error) {
+    throw error
   }
 
   return fileName

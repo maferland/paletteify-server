@@ -12,15 +12,18 @@ const maxJobsPerWorker = 1
 async function start() {
   let workQueue = new Queue('generate_palette', REDIS_URL)
 
-  workQueue.process(maxJobsPerWorker, async (job) => {
-    const {
-      data: {url},
-    } = job
-    const fileName = await screenshot(url)
-    const palette = await generate(url, fileName)
-    await store(url, palette)
-
-    return {palette}
+  workQueue.process(maxJobsPerWorker, async (job, done) => {
+    try {
+      const {
+        data: {url},
+      } = job
+      const fileName = await screenshot(url)
+      const palette = await generate(url, fileName)
+      await store(url, palette)
+      done()
+    } catch (error) {
+      done(error)
+    }
   })
 }
 
