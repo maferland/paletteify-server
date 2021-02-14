@@ -34,6 +34,7 @@ async function start() {
       done()
     } catch (error) {
       console.log(`FAIL -> JOB (#${job.id} for ${job.data.url})`)
+      console.log(error)
       done(error)
     }
   })
