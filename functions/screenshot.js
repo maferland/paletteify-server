@@ -24,7 +24,7 @@ const folder = './screenshots'
 const capture = async (url, fileName) => {
   return await Promise.race(
     await new Promise((resolve, reject) => {
-      setTimeout(() => reject([false, 'Screenshot timed out']), 25 * 1000)
+      setTimeout(() => reject([false, 'Screenshot timed out']), 45 * 1000)
     }),
     await captureWebsite
       .file(url, fileName, {
@@ -33,7 +33,7 @@ const capture = async (url, fileName) => {
         quality: '0.8',
         scaleFactor: 1,
         disableAnimations: true,
-        timeout: 20,
+        timeout: 40,
         overwrite: true,
         launchOptions: {
           args: ['--no-sandbox', '--disable-setuid-sandbox'],
