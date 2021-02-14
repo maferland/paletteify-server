@@ -30,7 +30,7 @@ const capture = async (url, fileName) => {
       .file(url, fileName, {
         fullPage: true,
         type: 'jpeg',
-        quality: '0.8',
+        quality: '0.5',
         scaleFactor: 1,
         disableAnimations: true,
         timeout: 40,
